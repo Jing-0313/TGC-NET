@@ -1,0 +1,18 @@
+group,enzyme,organism,mutation,topt,pred_topt,group_order,abs_error,wt_exp_topt,wt_pred_topt,exp_delta_topt,pred_delta_topt,delta_error,exp_direction,pred_direction,direction_match,direction_label
+Bbr_SP,Sucrose phosphorylase,Bifidobacterium breve,P134C/L341V/L343F,50,33.11,0,16.89,50.0,32.7,0.0,0.4099999999999966,0.4099999999999966,no change,no change,match,→/→
+Bbr_SP,Sucrose phosphorylase,Bifidobacterium breve,P134C/L343F,45,33.08,0,11.920000000000002,50.0,32.7,-5.0,0.37999999999999545,5.3799999999999955,decrease,no change,mismatch,↓/→
+Bbr_SP,Sucrose phosphorylase,Bifidobacterium breve,WT,50,32.7,0,17.299999999999997,50.0,32.7,0.0,0.0,0.0,WT,WT,WT,WT
+Bbr_SP,Sucrose phosphorylase,Bifidobacterium breve,L341V/L343F,55,32.78,0,22.22,50.0,32.7,5.0,0.0799999999999983,4.920000000000002,increase,no change,mismatch,↑/→
+TR_BGL,Beta-glucosidase,Trichoderma reesei,WT,40,37.18,1,2.8200000000000003,40.0,37.18,0.0,0.0,0.0,WT,WT,WT,WT
+TR_BGL,Beta-glucosidase,Trichoderma reesei,F250A,40,36.86,1,3.1400000000000006,40.0,37.18,0.0,-0.3200000000000003,0.3200000000000003,no change,no change,match,→/→
+TR_BGL,Beta-glucosidase,Trichoderma reesei,P172L,40,37.12,1,2.8800000000000026,40.0,37.18,0.0,-0.060000000000002274,0.060000000000002274,no change,no change,match,→/→
+TR_BGL,Beta-glucosidase,Trichoderma reesei,L167W,50,37.12,1,12.880000000000003,40.0,37.18,10.0,-0.060000000000002274,10.060000000000002,increase,no change,mismatch,↑/→
+TR_BGL,Beta-glucosidase,Trichoderma reesei,P172L/F250A,50,36.83,1,13.170000000000002,40.0,37.18,10.0,-0.3500000000000014,10.350000000000001,increase,no change,mismatch,↑/→
+TN_XI,Xylose isomerase,Thermotoga neapolitana,WT,97,96.27,2,0.730000000000004,97.0,96.27,0.0,0.0,0.0,WT,WT,WT,WT
+TN_XI,Xylose isomerase,Thermotoga neapolitana,P59Q,88,96.04,2,8.040000000000006,97.0,96.27,-9.0,-0.22999999999998977,8.77000000000001,decrease,no change,mismatch,↓/→
+TN_XI,Xylose isomerase,Thermotoga neapolitana,P63A,88,96.15,2,8.150000000000006,97.0,96.27,-9.0,-0.11999999999999034,8.88000000000001,decrease,no change,mismatch,↓/→
+TN_XI,Xylose isomerase,Thermotoga neapolitana,P59Q/P63A,86,96.04,2,10.040000000000006,97.0,96.27,-11.0,-0.22999999999998977,10.77000000000001,decrease,no change,mismatch,↓/→
+TT_XI,Xylose isomerase,Thermoanaerobacterium thermosulfurigenes,WT,84,87.54,3,3.5400000000000063,84.0,87.54,0.0,0.0,0.0,WT,WT,WT,WT
+TT_XI,Xylose isomerase,Thermoanaerobacterium thermosulfurigenes,Q59P,84,88.13,3,4.1299999999999955,84.0,87.54,0.0,0.5899999999999892,0.5899999999999892,no change,no change,match,→/→
+TT_XI,Xylose isomerase,Thermoanaerobacterium thermosulfurigenes,A63P,71,87.83,3,16.83,84.0,87.54,-13.0,0.28999999999999204,13.289999999999992,decrease,no change,mismatch,↓/→
+TT_XI,Xylose isomerase,Thermoanaerobacterium thermosulfurigenes,Q59P/A63P,73,88.24,3,15.239999999999995,84.0,87.54,-11.0,0.6999999999999886,11.699999999999989,decrease,no change,mismatch,↓/→
