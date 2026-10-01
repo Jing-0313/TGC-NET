@@ -1108,6 +1108,9 @@ For questions regarding TGC-Net, its datasets, or reproducibility, please open a
 Corresponding authors:
 
 ```text
+Jing Xv
+s25150812051@smail.cczu.edu.cn
+
 Lun Zhu
 zl@cczu.edu.cn
 
