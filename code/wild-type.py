@@ -94,10 +94,10 @@ class MultimodalToptPredictor:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input', default='/home/ys/new/xvjing/case-study/case-test.csv')
-    parser.add_argument('--output', default='/home/ys/new/xvjing/case-study/0.614result-topt.csv')
-    parser.add_argument('--model_path', default='/home/ys/new/xvjing/path/topt5/6topt_best_model_0.614.pth')
-    parser.add_argument('--structure_path', default='/home/ys/new/xvjing/case-study/structures.pt')
+    parser.add_argument('--input', default=' ')
+    parser.add_argument('--output', default=' ')
+    parser.add_argument('--model_path', default=' ')
+    parser.add_argument('--structure_path', default=' ')
     parser.add_argument('--esm_name', default='facebook/esm2_t33_650M_UR50D')
     parser.add_argument('--batch_size', type=int, default=4)
     args = parser.parse_args()
