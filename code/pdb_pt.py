@@ -39,8 +39,8 @@ def process_esm_directory(pdb_dir, output_path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pdb_dir', default='/home/ys/new/xvjing/wendu/pdbs')
-    parser.add_argument('--save_path', default='/home/ys/new/xvjing/wendu/diffthermo.pt')
+    parser.add_argument('--pdb_dir', default='  ')
+    parser.add_argument('--save_path', default='  ')
     args = parser.parse_args()
 
     os.makedirs(os.path.dirname(args.save_path), exist_ok=True)
