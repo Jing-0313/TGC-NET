@@ -16,7 +16,7 @@ def parse_pdb_coords(pdb_path, max_len=None):
     parser = PDB.PDBParser(QUIET=True)
     try:
         structure = parser.get_structure('protein', pdb_path)
-        model = structure[0]  # 取第一个模型
+        model = structure[0]
 
         coords = []
         for chain in model:
@@ -44,12 +44,10 @@ def get_rmse(x, y):
     return round(sqrt(mse), 6)
 
 def get_r2(x, y):
-    """计算 R2 分数"""
     x, y = np.array(x), np.array(y)
     return round(r2_score(x, y), 6)
 
 def get_mae(x, y):
-    """计算平均绝对误差"""
     x, y = np.array(x), np.array(y)
     return round(mean_absolute_error(x, y), 6)
 
