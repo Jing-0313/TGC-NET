@@ -34,6 +34,6 @@ def merge_csv_to_fastas(csv_files, output_folder="all_proteins"):
 
 
 if __name__ == "__main__":
-    files_to_process = ["/home/ys/new/xvjing/wendu/diffthermo_data.csv"]
-    target_dir = "/home/ys/new/xvjing/wendu/fastas"
+    files_to_process = ["  "]
+    target_dir = "  "
     merge_csv_to_fastas(files_to_process, target_dir)
