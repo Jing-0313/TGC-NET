@@ -162,11 +162,11 @@ class MultimodalPhPredictor:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input', default='/home/ys/new/TGC-Net/data/ph/test-ph.csv')
-    parser.add_argument('--output', default='/home/ys/new/TGC-Net/data/result/ph/result1.csv')
-    parser.add_argument('--model_path', default='/home/ys/new/TGC-Net/data/result/ph/ph_best_model.pth')
-    parser.add_argument('--structure_path', default='/home/ys/new/TGC-Net/data/ph/ph-structures.pt')
-    parser.add_argument('--quality_path', default='/home/ys/new/TGC-Net/data/ph/ph-quality.csv')
+    parser.add_argument('--input', default='  ')
+    parser.add_argument('--output', default='  ')
+    parser.add_argument('--model_path', default='  ')
+    parser.add_argument('--structure_path', default='  ')
+    parser.add_argument('--quality_path', default='  ')
     parser.add_argument('--esm_name', default='facebook/esm2_t33_650M_UR50D')
     parser.add_argument('--batch_size', type=int, default=4)
     args = parser.parse_args()
