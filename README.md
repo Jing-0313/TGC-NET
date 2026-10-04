@@ -24,7 +24,7 @@ TGC-Net does **not** require source-organism optimal growth temperature (OGT) as
 
 ## 1. Research question and model logic
 
-TGC-Net is organized around one question: **how should local sequence patterns and folded spatial environments jointly refine the representation of the same residue?** The four functional levels answer different parts of that question while retaining a shared residue index.
+TGC-Net coordinates **local sequence patterns and folding-induced spatial neighborhoods at aligned residue positions**. Continuous distances condition residue representations and guide structural-context selection, while aligned sequence–geometry discrepancies regulate feature-wise update strength. The four functional levels support this residue-level refinement before protein-level Topt prediction.
 
 | Functional level | Information problem | TGC-Net design and purpose |
 | --- | --- | --- |
@@ -33,7 +33,7 @@ TGC-Net is organized around one question: **how should local sequence patterns a
 | Fusion | Retrieving relevant structural context and deciding how strongly it should alter a sequence state are distinct operations. | Four-head cross-attention uses head-specific continuous-distance biases to select geometry-conditioned context. A feature-wise gate derived from squared sequence–structure discrepancy calibrates residual context incorporation. The gate is learned and should not be interpreted as a fixed monotonic confidence rule. |
 | Output | Uniform protein-level averaging can dilute signals concentrated at particular residues or feature channels. | Lightweight Residue-aware Attention Pooling (L-RAP) combines masked residue attention with feature-channel gating before three residual dense blocks perform continuous regression. |
 
-The sequence and structural pathways are therefore not independent feature extractors. The structural branch starts from the corrected sequence states, geometry conditions their folded microenvironments, and the fusion stage separately controls context selection and update strength before selective protein-level aggregation.
+The sequence and structural pathways are therefore not independent feature extractors. The structural branch starts from the corrected sequence states, geometry conditions these states on their folded microenvironments, and the fusion stage separately controls context selection and update strength before selective protein-level aggregation.
 
 The implemented forward path is:
 
@@ -416,7 +416,7 @@ Linear(1, 16) → SiLU → Linear(16, 4)
 
 The attention score is therefore modulated by both representation compatibility and continuous geometry. This addresses **which** geometry-conditioned context should be selected for a sequence residue.
 
-Importantly, the 15 Å hard cutoff used by the Geometric GNN is **not reapplied as a hard attention mask in TGC-Fusion**. TGC-Fusion uses the continuous pairwise distance matrix to generate additive spatial biases, while invalid Key/Value positions are excluded with the residue-validity mask.
+The 15 Å hard cutoff used by the Geometric GNN is **not reapplied as a hard attention mask in TGC-Fusion**. TGC-Fusion uses the continuous pairwise distance matrix to generate additive spatial biases, while invalid Key/Value positions are excluded with the residue-validity mask.
 
 After structural-context aggregation, TGC-Fusion computes a feature-wise calibration gate from:
 
@@ -424,7 +424,15 @@ After structural-context aggregation, TGC-Fusion computes a feature-wise calibra
 (H_seq - H_struct)^2
 ```
 
-and incorporates the aggregated structural context through a gated residual update. This separately addresses **how strongly** the selected context should update the sequence state. The learned gate does not impose a predefined rule that larger discrepancy must produce a smaller value; its behavior is determined during training.
+and incorporates the retrieved context through a gated residual update followed by projection and LayerNorm:
+
+```text
+Delta  = (H_seq - H_struct)^2                    # element-wise square
+G_cal  = sigmoid(W_cal(Delta) + b_cal)
+H_fuse = LayerNorm(W_o(H_seq + G_cal ⊙ C) + b_o)
+```
+
+Here, `C` is the concatenated context retrieved by the attention heads, and `⊙` denotes element-wise multiplication. Distance-biased attention selects context, while the discrepancy-conditioned gate controls **how strongly** the selected context updates each sequence feature. The learned gate does not impose a predefined rule that larger discrepancy must produce a smaller value; its behavior is determined during training.
 
 ---
 
@@ -432,7 +440,7 @@ and incorporates the aggregated structural context through a gated residual upda
 
 ### 9.1 Lightweight Residue-aware Attention Pooling
 
-TGC-Fusion returns a variable-length set of residue representations. L-RAP is used to prevent localized information from being uniformly diluted when these representations are reduced to one protein-level vector. It contains two complementary pathways.
+TGC-Fusion returns a variable-length set of residue representations. L-RAP learns residue- and channel-dependent contributions when these representations are reduced to one protein-level vector. It contains two complementary pathways.
 
 Residue-level attention:
 
@@ -446,7 +454,7 @@ Feature-channel gating:
 Linear(1280, 1280) → Sigmoid
 ```
 
-Special-token, padding, and structurally unavailable positions are masked before Softmax. Residue attention determines which positions contribute, while the sigmoid gate recalibrates feature channels within each residue. The resulting weights describe model-internal attribution and are not causal biological evidence.
+Special-token, padding, and structurally unavailable positions are masked before Softmax. The residue-attention weights sum to 1 over valid positions in each protein. Feature-channel gates are independent sigmoid values and are not constrained to sum to 1. Residue attention determines which positions contribute, while the sigmoid gate recalibrates feature channels within each residue. The resulting weights describe model-internal attribution and are not causal biological evidence.
 
 ### 9.2 RDBlock
 
@@ -501,7 +509,7 @@ The main training configuration is:
 | Minimum learning rate | `1e-6` |
 | Checkpoint selection | validation RMSE only |
 
-The retained training data are shuffled with `random_state=42` and split 9:1 into training and validation subsets.
+The retained development data are shuffled with `random_state=42` and split 9:1 into training and validation subsets.
 
 ---
 
@@ -744,7 +752,7 @@ The manuscript additionally reports 100 matched resampling analyses. Each iterat
 | DeepET | 0.496 ± 0.037 | 13.22 ± 0.41 | 9.89 ± 0.26 |
 | Preoptem | 0.336 ± 0.024 | 15.18 ± 0.37 | 11.12 ± 0.29 |
 
-TGC-Net had a higher R² than each baseline in all 100 matched subsets. Mean ΔR² values were 0.060 against Seq2Topt, 0.072 against TOMER, 0.134 against DeepET, and 0.294 against Preoptem. Paired Wilcoxon signed-rank tests with Holm–Bonferroni correction gave an adjusted `p = 7.79 × 10⁻18` for each comparison. These analyses assess stability of the relative ranking under changes in test-subset composition; they do not constitute evaluation on 100 independent external datasets.
+TGC-Net had a higher R² than each baseline in all 100 matched subsets. Mean ΔR² values were 0.060 against Seq2Topt, 0.072 against TOMER, 0.134 against DeepET, and 0.294 against Preoptem. These descriptive comparisons assess the stability of the relative ranking under changes in test-subset composition. The subsets overlap and are not independent model-development repetitions or external validation datasets.
 
 ### 17.3 Ablation and replacement analyses
 
@@ -823,7 +831,7 @@ The script also generates residue-importance profiles, a structure-coordinate pr
 
 In the manuscript analysis, masking the 10% least-important residues produced mean and median absolute prediction changes of 0.00 °C. Randomly masking 10% of residues produced mean and median changes of 0.33 and 0.01 °C, whereas masking the 10% highest-importance residues increased them to 4.32 and 3.91 °C. The high-importance perturbation exceeded the corresponding mean random perturbation effect in 275 of 291 held-out proteins (94.5%).
 
-The O30012 case study maps the top 10% of model-ranked residues onto the predicted structure. The selected positions include both spatially clustered and dispersed residues, illustrating how the analysis can generate hypotheses for follow-up annotation or experiments without assigning a biological mechanism from model weights alone.
+The O30012 case study maps model-ranked residues onto the predicted structure. The selected positions include both spatially clustered and dispersed residues, illustrating how the analysis can generate hypotheses for follow-up annotation or experiments without assigning a biological mechanism from model weights alone.
 
 The attribution analysis characterizes **model sensitivity and internal attribution**; it should not be interpreted as direct evidence of biological causality for individual residues.
 
@@ -845,7 +853,7 @@ python wild-type.py \
   --batch_size 4
 ```
 
-For the nine temporally external wild-type enzymes reported in 2025–2026, TGC-Net achieved:
+For the nine newly reported wild-type enzymes in the external evaluation set, TGC-Net achieved:
 
 ```text
 mean absolute error   = 7.02 °C
@@ -1015,13 +1023,13 @@ The 90/10 training/validation split is produced after shuffling the retained dev
 
 ## 25. Scope and limitations
 
-TGC-Net relies on predicted three-dimensional structures and therefore remains sensitive to structural-model quality.
+TGC-Net uses predicted Cα coordinates to represent folded neighborhoods. Structural prediction errors can affect this geometric input.
 
 Avg_pLDDT is used as a protein-level quality-control statistic during training-data selection, but the current model does not use pLDDT directly inside the Geometric GNN or TGC-Fusion.
 
 In the fixed Topt test set, Avg_pLDDT was not significantly correlated with absolute prediction error, indicating that mean structural confidence should not be interpreted as a per-sample prediction-confidence score.
 
-The manuscript reports Spearman ρ = −0.022 (`p = 0.714`) and Pearson r ≈ −0.023 (`p = 0.698`) across the 291 held-out samples. Avg_pLDDT is therefore used as a development-data quality-control criterion, not as a claimed estimator of prediction reliability.
+The manuscript reports Spearman ρ = −0.022 (`p = 0.715`) and Pearson r ≈ −0.023 (`p = 0.698`) across the 291 held-out samples. Avg_pLDDT is therefore used as a development-data quality-control criterion, not as a claimed estimator of prediction reliability.
 
 Predictions for structurally uncertain proteins should therefore be interpreted together with sequence evidence and, where possible, validated experimentally.
 
@@ -1105,12 +1113,16 @@ The final journal citation and DOI can be added after publication.
 
 For questions regarding TGC-Net, its datasets, or reproducibility, please open an issue in this repository.
 
+Project contact:
+
+```text
+Jing Xu
+s25150812051@smail.cczu.edu.cn
+```
+
 Corresponding authors:
 
 ```text
-Jing Xv
-s25150812051@smail.cczu.edu.cn
-
 Lun Zhu
 zl@cczu.edu.cn
 
