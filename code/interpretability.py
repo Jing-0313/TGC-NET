@@ -60,7 +60,7 @@ def smart_load_weights(model, state_dict, model_name="Model"):
             skipped_keys += 1
 
     model.load_state_dict(new_state_dict, strict=False)
-    print(f"✅ [{model_name}] matched {loaded_keys}/{len(model_keys)} keys, skipped {skipped_keys}")
+    print(f" [{model_name}] matched {loaded_keys}/{len(model_keys)} keys, skipped {skipped_keys}")
     return model
 
 
@@ -116,16 +116,16 @@ class TGCNetExplainer:
         self.device = torch.device(device if torch.cuda.is_available() else "cpu")
         self.max_length = max_length
 
-        print(f"🚀 Device: {self.device}")
-        print(f"📦 Loading structure dictionary: {structure_path}")
+        print(f" Device: {self.device}")
+        print(f" Loading structure dictionary: {structure_path}")
         self.structure_dict = safe_torch_load(structure_path, map_location="cpu")
 
-        print(f"📦 Loading ESM-2: {esm_name}")
+        print(f" Loading ESM-2: {esm_name}")
         self.tokenizer = AutoTokenizer.from_pretrained(esm_name)
         self.plm_model = AutoModel.from_pretrained(esm_name).to(self.device)
         self.model = MultimodalEnzymeModel(dim=self.plm_model.config.hidden_size).to(self.device)
 
-        print(f"📦 Loading checkpoint: {model_path}")
+        print(f" Loading checkpoint: {model_path}")
         checkpoint = safe_torch_load(model_path, map_location=self.device)
 
         if isinstance(checkpoint, dict):
@@ -136,12 +136,12 @@ class TGCNetExplainer:
 
             if "model_state_dict" in checkpoint:
                 self.model.load_state_dict(checkpoint["model_state_dict"], strict=False)
-                print("✅ [TGC-Net] model_state_dict loaded")
+                print(" [TGC-Net] model_state_dict loaded")
             else:
                 warnings.warn("checkpoint has no model_state_dict")
         else:
             self.model.load_state_dict(checkpoint, strict=False)
-            print("✅ [TGC-Net] legacy checkpoint loaded")
+            print(" [TGC-Net] legacy checkpoint loaded")
 
         self.plm_model.eval()
         self.model.eval()
@@ -295,7 +295,7 @@ def run_interpretability(args):
     sample_rows = []
     perturb_rows = []
 
-    print(f"🧪 Running interpretability on {len(df)} samples...")
+    print(f" Running interpretability on {len(df)} samples...")
 
     for start in tqdm(range(0, len(df), args.batch_size), desc="Explain"):
         batch = df.iloc[start:start + args.batch_size].copy()
@@ -734,11 +734,11 @@ def plot_interpretability_figures(residue_df, summary_df, perturb_df, case_ids, 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", default="/home/ys/new/TGC-Net/data/topt/test/test.csv")
-    parser.add_argument("--model_path", default="/home/ys/new/TGC-Net/pLDDT/0.7topt_best_model_0.624.pth")
-    parser.add_argument("--structure_path", default="/home/ys/new/TGC-Net/data/topt/test/291.pt")
-    parser.add_argument("--quality_path", default="/home/ys/new/TGC-Net/data/topt/test/291-quality.csv")
-    parser.add_argument("--outdir", default="./interpretability_results")
+    parser.add_argument("--input", default=" ")
+    parser.add_argument("--model_path", default=" ")
+    parser.add_argument("--structure_path", default=" ")
+    parser.add_argument("--quality_path", default=" ")
+    parser.add_argument("--outdir", default=" ")
     parser.add_argument("--esm_name", default="facebook/esm2_t33_650M_UR50D")
     parser.add_argument("--task", default="topt")
     parser.add_argument("--device", default="cuda")
