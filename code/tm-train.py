@@ -53,7 +53,7 @@ def smart_load_weights(model, state_dict, model_name="Model"):
     return model
 
 
-def plot_prediction_results(y_true, y_pred, save_path="/home/ys/new/TGC-Net/data/result/tm/test_prediction.png"):
+def plot_prediction_results(y_true, y_pred, save_path="  "):
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     plt.figure(figsize=(8, 8))
     sns.set_style("whitegrid")
@@ -72,7 +72,7 @@ def plot_prediction_results(y_true, y_pred, save_path="/home/ys/new/TGC-Net/data
     plt.close()
 
 
-def plot_training_history(history, save_path="/home/ys/new/TGC-Net/data/result/tm/training.png"):
+def plot_training_history(history, save_path="  "):
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     epochs = range(1, len(history['train_loss']) + 1)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
@@ -217,11 +217,11 @@ def load_best_model_for_final_test(best_model_path, model_name, device):
 
 def run_training():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--train_path', type=str, default='/home/ys/new/TGC-Net/data/tm/train-tm.csv')
-    parser.add_argument('--test_path', type=str, default='/home/ys/new/TGC-Net/data/tm/test-tm.csv')
-    parser.add_argument('--structure_path', type=str, default='/home/ys/new/TGC-Net/data/tm/tm-structures.pt')
-    parser.add_argument('--test_structure_path', type=str, default='/home/ys/new/TGC-Net/data/tm/tm-structures.pt')
-    parser.add_argument('--quality_path', type=str, default='/home/ys/new/TGC-Net/data/tm/quality_report.csv')
+    parser.add_argument('--train_path', type=str, default='  ')
+    parser.add_argument('--test_path', type=str, default='  ')
+    parser.add_argument('--structure_path', type=str, default='  ')
+    parser.add_argument('--test_structure_path', type=str, default='  ')
+    parser.add_argument('--quality_path', type=str, default='  ')
     parser.add_argument('--plddt_threshold', type=float, default=0.7)
     parser.add_argument('--task', type=str, default='tm')
     parser.add_argument('--target_min', type=float, default=0.0)
@@ -232,11 +232,11 @@ def run_training():
     parser.add_argument('--accumulation_steps', type=int, default=1)
     parser.add_argument('--epochs', type=int, default=60)
     parser.add_argument('--max_length', type=int, default=800)
-    parser.add_argument('--save_path', type=str, default='/home/ys/new/TGC-Net/data/result/tm/tm_best_model.pth')
-    parser.add_argument('--ckpt_path', type=str, default='/home/ys/new/TGC-Net/data/result/tm/checkpoint.pth')
-    parser.add_argument('--final_pred_path', type=str, default='/home/ys/new/TGC-Net/data/result/tm/results-tm.csv')
-    parser.add_argument('--history_fig_path', type=str, default='/home/ys/new/TGC-Net/data/result/tm/training.png')
-    parser.add_argument('--final_fig_path', type=str, default='/home/ys/new/TGC-Net/data/result/tm/test_prediction.png')
+    parser.add_argument('--save_path', type=str, default=' ')
+    parser.add_argument('--ckpt_path', type=str, default=' ')
+    parser.add_argument('--final_pred_path', type=str, default=' ')
+    parser.add_argument('--history_fig_path', type=str, default=' ')
+    parser.add_argument('--final_fig_path', type=str, default=' ')
     args = parser.parse_args()
     os.makedirs(os.path.dirname(args.save_path), exist_ok=True)
     os.makedirs(os.path.dirname(args.final_pred_path), exist_ok=True)
@@ -393,7 +393,7 @@ def run_training():
             history['dev_r2'].append(dev_r2)
             history['dev_rmse'].append(dev_rmse)
             history['dev_mae'].append(dev_mae)
-            print(f"⭐ Epoch {epoch + 1}")
+            print(f" Epoch {epoch + 1}")
             print(f"   Train Loss:      {avg_train_loss:.4f}")
             print(f"   Validation RMSE: {dev_rmse:.2f} | MAE: {dev_mae:.2f} | R2: {dev_r2:.4f}")
             scheduler.step(dev_rmse)
@@ -433,7 +433,7 @@ def run_training():
         device, args, args.target_min, args.target_max, desc="Final Independent Test"
     )
     print("\n" + "=" * 60)
-    print("🎯 Final Independent Test Results")
+    print(" Final Independent Test Results")
     print(f"   Selected by: Validation RMSE")
     print(f"   Best Validation RMSE: {best_dev_rmse:.4f}")
     print(f"   Final Test R2:        {final_r2:.4f}")
