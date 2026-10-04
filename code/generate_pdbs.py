@@ -4,7 +4,7 @@ import argparse
 import glob
 from tqdm import tqdm
 from transformers import AutoTokenizer, EsmForProteinFolding
-from Bio import SeqIO  # 使用 BioPython 解析 FASTA 更稳健
+from Bio import SeqIO
 import sys
 import re
 
@@ -90,8 +90,8 @@ def process_fasta_folder(input_dir, output_dir, tokenizer, model, device):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_dir', default='/home/ys/new/xvjing/wendu/fastas')
-    parser.add_argument('--output_dir', default='/home/ys/new/xvjing/wendu/pdbs')
+    parser.add_argument('--input_dir', default='  ')
+    parser.add_argument('--output_dir', default='  ')
     args = parser.parse_args()
     os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:128"
     tokenizer, model, device = setup_model()
