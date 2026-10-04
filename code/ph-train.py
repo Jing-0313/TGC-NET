@@ -53,7 +53,7 @@ def smart_load_weights(model, state_dict, model_name="Model"):
     return model
 
 
-def plot_prediction_results(y_true, y_pred, save_path="/home/ys/new/TGC-Net/data/result/ph/test_prediction.png"):
+def plot_prediction_results(y_true, y_pred, save_path=" "):
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     plt.figure(figsize=(8, 8))
     sns.set_style("whitegrid")
@@ -72,7 +72,7 @@ def plot_prediction_results(y_true, y_pred, save_path="/home/ys/new/TGC-Net/data
     plt.close()
 
 
-def plot_training_history(history, save_path="/home/ys/new/TGC-Net/data/result/ph/training.png"):
+def plot_training_history(history, save_path=" "):
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     epochs = range(1, len(history['train_loss']) + 1)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
