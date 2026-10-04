@@ -6,8 +6,8 @@ import numpy as np
 from tqdm import tqdm
 
 
-pdb_folder = "/home/ys/new/xvjing/data/topt1/test-pdb"
-output_csv = "/home/ys/new/xvjing/data/topt1/291-quality.csv"
+pdb_folder = "  "
+output_csv = "  "
 
 
 def get_avg_plddt(pdb_path):
