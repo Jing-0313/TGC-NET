@@ -190,31 +190,11 @@ def plot_dumbbell(
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "--input",
-        type=str,
-        default="/home/ys/new/TGC-Net/casestudy/casestudy1/32-result.csv"
-    )
-    parser.add_argument(
-        "--output",
-        type=str,
-        default="/home/ys/new/TGC-Net/casestudy/casestudy1/32.png"
-    )
-    parser.add_argument(
-        "--id_col",
-        type=str,
-        default="uniprot_id"
-    )
-    parser.add_argument(
-        "--true_col",
-        type=str,
-        default="topt"
-    )
-    parser.add_argument(
-        "--pred_col",
-        type=str,
-        default="pred_topt"
-    )
+    parser.add_argument("--input", type=str, default=" ")
+    parser.add_argument("--output",type=str,default=" ")
+    parser.add_argument("--id_col",type=str,default="uniprot_id")
+    parser.add_argument("--true_col",type=str,default="topt")
+    parser.add_argument("--pred_col",type=str,default="pred_topt")
 
     args = parser.parse_args()
 
