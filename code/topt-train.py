@@ -53,7 +53,7 @@ def smart_load_weights(model, state_dict, model_name="Model"):
     return model
 
 
-def plot_prediction_results(y_true, y_pred, save_path="../pictures/topt/final_test_prediction_plot.png"):
+def plot_prediction_results(y_true, y_pred, save_path=" "):
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     plt.figure(figsize=(8, 8))
     sns.set_style("whitegrid")
@@ -72,7 +72,7 @@ def plot_prediction_results(y_true, y_pred, save_path="../pictures/topt/final_te
     plt.close()
 
 
-def plot_training_history(history, save_path="../pictures/topt/training_process_dev_selection.png"):
+def plot_training_history(history, save_path=" "):
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     epochs = range(1, len(history['train_loss']) + 1)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
@@ -216,11 +216,11 @@ def load_best_model_for_final_test(best_model_path, model_name, device):
 
 def run_training():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--train_path', type=str, default='../data/topt1/code.csv')
-    parser.add_argument('--test_path', type=str, default='../data/topt1/test.csv')
-    parser.add_argument('--structure_path', type=str, default='../data/topt1/topt_structures.pt')
-    parser.add_argument('--test_structure_path', type=str, default='../data/topt1/291.pt')
-    parser.add_argument('--quality_path', type=str, default='../data/topt1/quality_report.csv')
+    parser.add_argument('--train_path', type=str, default=' ')
+    parser.add_argument('--test_path', type=str, default=' ')
+    parser.add_argument('--structure_path', type=str, default=' ')
+    parser.add_argument('--test_structure_path', type=str, default=' ')
+    parser.add_argument('--quality_path', type=str, default=' ')
     parser.add_argument('--plddt_threshold', type=float, default=0.7)
     parser.add_argument('--task', type=str, default='topt')
     parser.add_argument('--model_name', type=str, default='facebook/esm2_t33_650M_UR50D')
@@ -229,11 +229,11 @@ def run_training():
     parser.add_argument('--accumulation_steps', type=int, default=1)
     parser.add_argument('--epochs', type=int, default=60)
     parser.add_argument('--max_length', type=int, default=800)
-    parser.add_argument('--save_path', type=str, default='../path/topt5/9topt_best_model.pth')
-    parser.add_argument('--ckpt_path', type=str, default='../path/topt5/9last_checkpoint_dev_selection.pth')
-    parser.add_argument('--final_pred_path', type=str, default='../data/topt5/9final_test_predictions.csv')
-    parser.add_argument('--history_fig_path', type=str, default='../pictures/topt5/9training_process_dev_selection.png')
-    parser.add_argument('--final_fig_path', type=str, default='../pictures/topt5/9final_test_prediction_plot.png')
+    parser.add_argument('--save_path', type=str, default=' ')
+    parser.add_argument('--ckpt_path', type=str, default=' ')
+    parser.add_argument('--final_pred_path', type=str, default=' ')
+    parser.add_argument('--history_fig_path', type=str, default=' ')
+    parser.add_argument('--final_fig_path', type=str, default=' ')
     args = parser.parse_args()
     os.makedirs(os.path.dirname(args.save_path), exist_ok=True)
     os.makedirs(os.path.dirname(args.final_pred_path), exist_ok=True)
@@ -420,7 +420,7 @@ def run_training():
         device, args, 0.0, 120.0, desc="Final Independent Test"
     )
     print("\n" + "=" * 60)
-    print("🎯 Final Independent Test Results")
+    print(" Final Independent Test Results")
     print(f"   Selected by: Validation RMSE")
     print(f"   Best Validation RMSE: {best_dev_rmse:.4f}℃")
     print(f"   Final Test R2:        {final_r2:.4f}")
